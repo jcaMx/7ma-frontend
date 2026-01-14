@@ -17,22 +17,35 @@ export default function FormView({ onSubmitted }: Props) {
     notes: ''
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const update = (key: keyof PresentationForm, value: string) =>
     setForm({ ...form, [key]: value });
 
-  const submit = async () => {
-    if (!form.name || !form.title || !form.company) {
-      alert('Name, Title, and Company are required.');
-      return;
-    }
 
-    try {
-      const res = await createPresentation(form);
-      onSubmitted(res.request_id);
-    } catch {
-      alert('Failed to start generation');
-    }
-  };
+  const submit = async () => {
+  if (isSubmitting) return;
+
+  if (!form.name || !form.title || !form.company) {
+    alert('Name, Title, and Company are required.');
+    return;
+  }
+
+  setIsSubmitting(true);
+
+  try {
+    const res = await createPresentation(form);
+    onSubmitted(res.request_id);
+  } catch {
+    alert('Failed to start generation');
+    setIsSubmitting(false); // allow retry
+  }
+};
+
+
+  
+
+
 
   return (
     <div className="
@@ -140,16 +153,17 @@ export default function FormView({ onSubmitted }: Props) {
         {/* CTA */}
           <button
           onClick={submit}
+          disabled={isSubmitting}
           className="
             w-full py-4 rounded-xl
-            bg-steel/90 hover:bg-steel
+            ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-steel/90 hover:bg-steel'}
             text-white font-semibold
             backdrop-blur-sm
             border border-white/20
             transition
           "
         >
-          Generate Presentation
+          {isSubmitting ? 'Generating…' : 'Generate Presentation'}
         </button>
 
       </div>
