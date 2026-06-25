@@ -22,30 +22,24 @@ export default function FormView({ onSubmitted }: Props) {
   const update = (key: keyof PresentationForm, value: string) =>
     setForm({ ...form, [key]: value });
 
-
   const submit = async () => {
-  if (isSubmitting) return;
+    if (isSubmitting) return;
 
-  if (!form.name || !form.title || !form.company) {
-    alert('Name, Title, and Company are required.');
-    return;
-  }
+    if (!form.name || !form.title || !form.company) {
+      alert('Name, Title, and Company are required.');
+      return;
+    }
 
-  setIsSubmitting(true);
+    setIsSubmitting(true);
 
-  try {
-    const res = await createPresentation(form);
-    onSubmitted(res.request_id);
-  } catch {
-    alert('Failed to start generation');
-    setIsSubmitting(false); // allow retry
-  }
-};
-
-
-  
-
-
+    try {
+      const res = await createPresentation(form);
+      onSubmitted(res.request_id);
+    } catch {
+      alert('Failed to start generation');
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="
@@ -54,7 +48,6 @@ export default function FormView({ onSubmitted }: Props) {
       selection:bg-indigo-500/30 selection:text-white
       flex items-center justify-center p-6
     ">
-      {/* Glass Card */}
       <div className="
         glass w-full max-w-xl
         bg-white/10 border border-white/15
@@ -64,7 +57,6 @@ export default function FormView({ onSubmitted }: Props) {
           7MA Presentation Generator
         </h1>
 
-        {/* Name */}
         <input
           type="text"
           placeholder="Name"
@@ -74,9 +66,10 @@ export default function FormView({ onSubmitted }: Props) {
           value={form.name}
           onChange={(e) => update('name', e.target.value)}
         />
+
         <div className="flex gap-3">
           <input
-          type="email"
+            type="email"
             placeholder="Email"
             className="w-full mb-3 rounded-lg bg-white/80 text-gray-900
               p-3 border border-white/30
@@ -85,7 +78,6 @@ export default function FormView({ onSubmitted }: Props) {
             onChange={(e) => update('email', e.target.value)}
           />
 
-                          {/* Gender */}
           <select
             className="w-full mb-3 rounded-lg bg-white/80 text-gray-900
               p-3 border border-white/30
@@ -93,26 +85,13 @@ export default function FormView({ onSubmitted }: Props) {
             value={form.gender}
             onChange={(e) => update('gender', e.target.value)}
           >
-            <option value="" className="text-gray-400">
-              Select Gender
-            </option>
+            <option value="" className="text-gray-400">Select Gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
           </select>
-
-
         </div>
 
-
-
-
-
-
-
-
-        {/* Title & Company */}
-        {/* <div className='flex gap-3'> */}
-          {(['title', 'company'] as const).map((f) => (
+        {(['title', 'company'] as const).map((f) => (
           <input
             key={f}
             type="text"
@@ -125,12 +104,6 @@ export default function FormView({ onSubmitted }: Props) {
           />
         ))}
 
-        {/* </div> */}
-
-
-
-
-        {/* Bio */}
         <textarea
           placeholder="Biography"
           className="w-full mb-3 rounded-lg bg-white/80 text-gray-900
@@ -140,7 +113,6 @@ export default function FormView({ onSubmitted }: Props) {
           onChange={(e) => update('bio', e.target.value)}
         />
 
-        {/* Notes */}
         <textarea
           placeholder="Notes"
           className="w-full mb-4 rounded-lg bg-white/80 text-gray-900
@@ -150,8 +122,7 @@ export default function FormView({ onSubmitted }: Props) {
           onChange={(e) => update('notes', e.target.value)}
         />
 
-        {/* CTA */}
-          <button
+        <button
           onClick={submit}
           disabled={isSubmitting}
           className="
@@ -165,8 +136,7 @@ export default function FormView({ onSubmitted }: Props) {
         >
           {isSubmitting ? 'Generating…' : 'Generate Presentation'}
         </button>
-
       </div>
     </div>
   );
-} 
+}

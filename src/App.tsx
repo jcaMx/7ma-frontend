@@ -1,27 +1,15 @@
-import { useState } from 'react';
-import FormView from './components/FormView';
-import ProcessingView from './components/ProcessingView';
-import ResultView from './components/ResultView';
+import { Routes, Route } from "react-router-dom";
+
+import HomePage from "./pages/HomePage";
+import { DeckTestPage } from "./DeckTestPage.tsx";
+import { DeckViewPage } from "./pages/DeckViewPage.tsx";
 
 export default function App() {
-  const [requestId, setRequestId] = useState<string | null>(null);
-  const [slidesUrl, setSlidesUrl] = useState<string | null>(null);
-
-  if (!requestId) {
-    return <FormView onSubmitted={setRequestId} />;
-  }
-
-  if (!slidesUrl) {
-    return (
-      <ProcessingView
-        requestId={requestId}
-        onCompleted={setSlidesUrl}
-      />
-    );
-  }
-
-  return <ResultView slidesUrl={slidesUrl} onReset={() => {
-    setRequestId(null);
-    setSlidesUrl(null);
-  }} />;
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/deck-test" element={<DeckTestPage />} />
+      <Route path="/deck/:requestId" element={<DeckViewPage />} />
+    </Routes>
+  );
 }

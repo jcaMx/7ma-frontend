@@ -8,7 +8,7 @@ export type PresentationForm = {
   notes: string;
 };
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL;
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "";
 
 export async function createPresentation(form: PresentationForm) {
   const res = await fetch(`${API_BASE}/api/presentation`, {
@@ -37,4 +37,14 @@ export async function getPresentationStatus(requestId: string) {
     status: "processing" | "completed" | "error";
     slides_url?: string;
   }>;
+}
+
+export async function getPresentationDeck(requestId: string) {
+  const res = await fetch(`${API_BASE}/api/presentation/${requestId}/deck`);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch deck");
+  }
+
+  return res.json();
 }

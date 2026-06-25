@@ -59,11 +59,12 @@ export default function HomePage() {
   
   return (
     <ResultView
+      requestId={requestId!}
       slidesUrl={slidesUrl!}
       onReset={() => {
         setRequestId(null);
         setSlidesUrl(null);
-        setView('form');
+        setView("form");
       }}
     />
   );
