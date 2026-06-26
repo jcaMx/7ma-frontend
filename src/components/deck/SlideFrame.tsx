@@ -1,60 +1,16 @@
-import { useEffect, useRef, useState } from "react";
-
 type SlideFrameProps = {
   children: React.ReactNode;
+  bgClass?: string;
 };
 
-export function SlideFrame({ children }: SlideFrameProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const handleResize = () => {
-      const containerWidth = container.offsetWidth;
-      // Target design width is 1200px
-      const newScale = containerWidth / 1200;
-      setScale(newScale);
-    };
-
-    handleResize();
-
-    // Use ResizeObserver for accurate container resizing
-    const resizeObserver = new ResizeObserver(() => {
-      handleResize();
-    });
-    resizeObserver.observe(container);
-
-    return () => {
-      resizeObserver.disconnect();
-    };
-  }, []);
-
+export function SlideFrame({ children, bgClass = "bg-[#02213b]" }: SlideFrameProps) {
   return (
     <section
-      ref={containerRef}
-      className="relative mx-auto block overflow-hidden rounded-2xl shadow-xl bg-[#02213b]"
-      style={{
-        width: "100%",
-        maxWidth: 1200,
-        aspectRatio: "16 / 9",
-      }}
+      className={`relative mx-auto w-full max-w-[1200px] overflow-hidden rounded-2xl shadow-xl flex flex-col min-h-[500px] sm:min-h-[600px] md:min-h-0 md:aspect-[16/9] ${bgClass}`}
     >
-      <div
-        style={{
-          width: 1200,
-          height: 675,
-          transform: `scale(${scale})`,
-          transformOrigin: "top left",
-          position: "absolute",
-          top: 0,
-          left: 0,
-        }}
-      >
+      <div className="flex-1 flex flex-col min-h-0 w-full relative">
         {children}
       </div>
     </section>
   );
-}
+}

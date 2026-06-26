@@ -1,6 +1,5 @@
 import { AudioButton } from "../AudioButton";
 import { SlideFrame } from "../SlideFrame";
-import { getDynamicFontSize } from "../textHelper";
 
 type CapabilityIntroSlideProps = {
   capability: string;
@@ -17,13 +16,12 @@ export function CapabilityIntroSlide({
   audioUrl,
   slideNumber,
 }: CapabilityIntroSlideProps) {
-  const descFontSize = getDynamicFontSize(description, 1.875, 0.95);
 
   return (
-    <SlideFrame>
-      <div className="grid h-full grid-cols-[60%_40%] bg-white font-raleway">
+    <SlideFrame bgClass="bg-white">
+      <div className="bg-white flex flex-col md:grid md:grid-cols-[60%_40%] flex-1 w-full min-h-full font-raleway">
         {/* Left image */}
-        <div className="relative h-full overflow-hidden">
+        <div className="relative w-full h-48 sm:h-64 md:h-full overflow-hidden">
           <img
             src={imageUrl}
             alt={capability}
@@ -31,37 +29,30 @@ export function CapabilityIntroSlide({
           />
 
           {slideNumber && (
-            <span className="absolute bottom-5 left-6 text-sm text-white">
+            <span className="absolute bottom-4 left-4 text-xs md:text-sm text-white">
               {slideNumber}
             </span>
           )}
         </div>
 
         {/* Right content */}
-        <div className="relative flex h-full flex-col justify-center px-12 text-[#003b67]">
+        <div className="relative flex-1 flex flex-col justify-center p-6 sm:p-10 md:px-12 md:py-8 pb-16 md:pb-8 text-[#003b67]">
           <div className="max-w-[420px]">
-            <h1 className="text-5xl font-medium leading-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-5xl font-medium leading-tight">
               {capability}
             </h1>
 
-            <p 
-              className="mt-6 leading-snug text-[#003b67]/90"
-              style={{ fontSize: descFontSize }}
+            <p
+              className="mt-4 md:mt-6 leading-snug text-[#003b67]/90 text-sm sm:text-base md:text-lg"
             >
               {description}
             </p>
           </div>
 
-          <div className="absolute bottom-6 right-6">
+          <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6">
             <AudioButton audioUrl={audioUrl} />
           </div>
         </div>
-        
-          {slideNumber && (
-          <span className="absolute bottom-5 right-6 text-sm text-white/70">
-            {slideNumber}
-          </span>
-          )}
       </div>
     </SlideFrame>
   );

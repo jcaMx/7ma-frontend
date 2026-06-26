@@ -8,18 +8,16 @@ import { getPresentationDeck } from "../api/presentation";
 import { renderSlide } from "../components/deck/renderSlide";
 import { mapBackendToDeck } from "../components/deck/mapBackendToDeck";
 
-
-
 export function DeckViewPage() {
   const { requestId } = useParams();
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function loadDeck() {
+    async function loadDeck(id: string) {
       try {
-        const rawJson = await getPresentationDeck(requestId);
-        const deckJson = rawJson.slides ? rawJson : mapBackendToDeck(rawJson);
+        const rawJson = await getPresentationDeck(id);
+        const deckJson = rawJson.slides ? rawJson : mapBackendToDeck(rawJson, id);
         setData(deckJson);
       } catch (err) {
         console.error("Failed to load HTML deck", err);
@@ -29,7 +27,7 @@ export function DeckViewPage() {
       }
     }
 
-    if (requestId) loadDeck();
+    if (requestId) loadDeck(requestId);
   }, [requestId]);
 
   if (loading) return <div className="p-10 text-white">Loading deck...</div>;
