@@ -48,3 +48,20 @@ export async function getPresentationDeck(requestId: string) {
 
   return res.json();
 }
+
+export async function getPresentations() {
+  const res = await fetch(`${API_BASE}/api/presentations`);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch presentations");
+  }
+
+  return res.json() as Promise<{
+    presentations: Array<{
+      folder: string;
+      name: string;
+      company: string;
+      title: string;
+    }>;
+  }>;
+}

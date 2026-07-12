@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { createPresentation } from '../api/presentation';
 import type { PresentationForm } from '../api/presentation';
 
@@ -7,6 +8,7 @@ type Props = {
 };
 
 export default function FormView({ onSubmitted }: Props) {
+  const navigate = useNavigate();
   const [form, setForm] = useState<PresentationForm>({
     name: '',
     email: '',
@@ -53,9 +55,23 @@ export default function FormView({ onSubmitted }: Props) {
         bg-white/10 border border-white/15
         rounded-2xl p-6 shadow-glow
       ">
-        <h1 className="text-3xl font-semibold text-center mb-6 text-mustard">
-          7MA Presentation Generator
-        </h1>
+        <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4 text-center sm:text-left">
+          <h1 className="text-3xl font-semibold text-mustard">
+            7MA Presentation Generator
+          </h1>
+          <button
+            onClick={() => navigate('/prospects')}
+            className="
+              text-sm whitespace-nowrap
+              px-4 py-2 rounded-lg
+              bg-white/10 border border-white/15
+              hover:bg-white/15 hover:border-white/20
+              transition text-slate-200 hover:text-white
+            "
+          >
+            View cached decks
+          </button>
+        </div>
 
         <input
           type="text"
